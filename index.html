@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="EcoVision — AI-powered sustainability app. Track your carbon footprint, scan waste, get personalized eco advice, and earn green badges."/>
+  <meta name="theme-color" content="#0a1a0f"/>
+  <title>EcoVision — AI Sustainability Dashboard</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🌍</text></svg>"/>
+  <link rel="stylesheet" href="index.css"/>
+</head>
+<body>
+
+  <!-- Animated Background -->
+  <div class="bg-animation">
+    <div class="orb"></div>
+    <div class="orb"></div>
+    <div class="orb"></div>
+  </div>
+
+  <!-- Leaf Particles -->
+  <div class="leaf-particles"></div>
+
+  <!-- App Container -->
+  <div class="app-container">
+
+    <!-- Sidebar Navigation (Desktop) -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <span class="logo-icon">🌍</span>
+        <span class="logo-text">EcoVision</span>
+      </div>
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-page="home">
+          <span class="nav-emoji">🏠</span>
+          <span class="nav-label">Home</span>
+        </button>
+        <button class="nav-item" data-page="assessment">
+          <span class="nav-emoji">📋</span>
+          <span class="nav-label">Assessment</span>
+        </button>
+        <button class="nav-item" data-page="scan">
+          <span class="nav-emoji">📸</span>
+          <span class="nav-label">Scan</span>
+        </button>
+        <button class="nav-item" data-page="coach">
+          <span class="nav-emoji">🧠</span>
+          <span class="nav-label">AI Coach</span>
+        </button>
+        <button class="nav-item" data-page="simulator">
+          <span class="nav-emoji">📊</span>
+          <span class="nav-label">Simulator</span>
+        </button>
+        <button class="nav-item" data-page="profile">
+          <span class="nav-emoji">👤</span>
+          <span class="nav-label">Profile</span>
+        </button>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="page active" id="page-home"></div>
+      <div class="page" id="page-assessment"></div>
+      <div class="page" id="page-scan"></div>
+      <div class="page" id="page-coach"></div>
+      <div class="page" id="page-simulator"></div>
+      <div class="page" id="page-profile"></div>
+    </main>
+
+  </div>
+
+  <!-- Bottom Navigation (Mobile) -->
+  <nav class="bottom-nav">
+    <div class="bottom-nav-items">
+      <button class="bottom-nav-item active" data-page="home">
+        <span class="nav-emoji">🏠</span>
+        <span class="nav-label">Home</span>
+      </button>
+      <button class="bottom-nav-item" data-page="assessment">
+        <span class="nav-emoji">📋</span>
+        <span class="nav-label">Assess</span>
+      </button>
+      <button class="bottom-nav-item" data-page="scan">
+        <span class="nav-emoji">📸</span>
+        <span class="nav-label">Scan</span>
+      </button>
+      <button class="bottom-nav-item" data-page="coach">
+        <span class="nav-emoji">🧠</span>
+        <span class="nav-label">Coach</span>
+      </button>
+      <button class="bottom-nav-item" data-page="simulator">
+        <span class="nav-emoji">📊</span>
+        <span class="nav-label">Simulate</span>
+      </button>
+      <button class="bottom-nav-item" data-page="profile">
+        <span class="nav-emoji">👤</span>
+        <span class="nav-label">Profile</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Confirm Clear Data Modal -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal">
+      <h3>Clear All Data</h3>
+      <p>This will reset all your progress, assessments, and scan history. Are you sure?</p>
+      <div class="modal-buttons">
+        <button class="btn btn-secondary" onclick="hideClearDataModal()">Cancel</button>
+        <button class="btn btn-danger" onclick="confirmClearData()">Clear</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
