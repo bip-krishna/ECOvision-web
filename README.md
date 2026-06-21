@@ -1,3 +1,10 @@
+## 📁 Related Projects
+
+- **EcoVision Mobile** — The React Native (Expo) app: https://github.com/bip-krishna/EcoVision
+- **Backend API** — FastAPI server with YOLOv8 + Gemini AI: https://github.com/bip-krishna/EcoVision/tree/main/EcoVision/backend
+
+---
+
 # 🌍 EcoVision Web — AI-Powered Sustainability Dashboard
 
 > Track your carbon footprint, scan waste, get AI-powered eco advice, and earn green badges — all from your browser.
@@ -234,12 +241,7 @@ python3 -m http.server 3000
 
 ---
 
-## 📁 Related Projects
 
-- **EcoVision Mobile** — The original React Native (Expo) app: [`../EcoVision/`](../EcoVision/)
-- **Backend API** — FastAPI server with YOLOv8 + Gemini AI: [`../EcoVision/EcoVision/backend/`](../EcoVision/EcoVision/backend/)
-
----
 
 ## 📄 License
 
