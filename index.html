@@ -25,13 +25,13 @@
   <div class="app-container">
 
     <!-- Sidebar Navigation (Desktop) -->
-    <aside class="sidebar">
+    <aside class="sidebar" aria-label="Sidebar Navigation">
       <div class="sidebar-logo">
-        <span class="logo-icon">🌍</span>
+        <span class="logo-icon" aria-hidden="true">🌍</span>
         <span class="logo-text">EcoVision</span>
       </div>
-      <nav class="sidebar-nav">
-        <button class="nav-item active" data-page="home">
+      <nav class="sidebar-nav" aria-label="Main Menu">
+        <button class="nav-item active" data-page="home" aria-current="page">
           <span class="nav-emoji">🏠</span>
           <span class="nav-label">Home</span>
         </button>
@@ -59,8 +59,8 @@
     </aside>
 
     <!-- Main Content -->
-    <main class="main-content">
-      <div class="page active" id="page-home"></div>
+    <main class="main-content" aria-live="polite">
+      <div class="page active" id="page-home" role="region" aria-label="Home"></div>
       <div class="page" id="page-assessment"></div>
       <div class="page" id="page-scan"></div>
       <div class="page" id="page-coach"></div>
@@ -71,9 +71,9 @@
   </div>
 
   <!-- Bottom Navigation (Mobile) -->
-  <nav class="bottom-nav">
-    <div class="bottom-nav-items">
-      <button class="bottom-nav-item active" data-page="home">
+  <nav class="bottom-nav" aria-label="Mobile Navigation">
+    <div class="bottom-nav-items" role="tablist">
+      <button class="bottom-nav-item active" data-page="home" role="tab" aria-selected="true">
         <span class="nav-emoji">🏠</span>
         <span class="nav-label">Home</span>
       </button>
@@ -101,9 +101,9 @@
   </nav>
 
   <!-- Confirm Clear Data Modal -->
-  <div class="modal-overlay" id="modal-overlay">
-    <div class="modal">
-      <h3>Clear All Data</h3>
+  <div class="modal-overlay" id="modal-overlay" aria-hidden="true">
+    <div class="modal" role="dialog" aria-labelledby="modal-title" aria-modal="true">
+      <h3 id="modal-title">Clear All Data</h3>
       <p>This will reset all your progress, assessments, and scan history. Are you sure?</p>
       <div class="modal-buttons">
         <button class="btn btn-secondary" onclick="hideClearDataModal()">Cancel</button>
@@ -113,7 +113,7 @@
   </div>
 
   <!-- Toast -->
-  <div class="toast" id="toast"></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script src="app.js"></script>
 </body>

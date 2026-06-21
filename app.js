@@ -99,8 +99,21 @@ const simOptions = [
 ];
 
 // ==========================================
-// STORAGE HELPERS
+// SECURITY & STORAGE HELPERS
 // ==========================================
+
+function escapeHTML(str) {
+  if (!str) return '';
+  return String(str).replace(/[&<>'"]/g, 
+    tag => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      "'": '&#39;',
+      '"': '&quot;'
+    }[tag] || tag)
+  );
+}
 
 function storageGet(key) {
   try {
@@ -710,7 +723,7 @@ function renderScanner() {
         <div class="scan-result-grid">
           <div class="scan-result-row">
             <span class="scan-label">Object:</span>
-            <span class="scan-value">${s.result.object}</span>
+            <span class="scan-value">${escapeHTML(s.result.object)}</span>
           </div>
           <div class="scan-result-row">
             <span class="scan-label">Category:</span>
@@ -730,7 +743,7 @@ function renderScanner() {
         </div>
         <div class="scan-suggestion-box">
           <span class="suggestion-icon">💡</span>
-          <span class="suggestion-text">${s.result.suggestion}</span>
+          <span class="suggestion-text">${escapeHTML(s.result.suggestion)}</span>
         </div>
       </div>
     `;
@@ -748,7 +761,7 @@ function renderScanner() {
               <div class="history-item">
                 <span class="history-dot" style="background: ${dotColor}"></span>
                 <div class="history-content">
-                  <div class="history-object">${item.object}</div>
+                  <div class="history-object">${escapeHTML(item.object)}</div>
                   <div class="history-date">${formatDateShort(item.date)}</div>
                 </div>
                 <span class="history-co2">${item.co2Saved} kg</span>
@@ -766,8 +779,8 @@ function renderScanner() {
       <p>Upload an image to classify waste and learn how to recycle</p>
     </div>
 
-    <div class="upload-zone" id="upload-zone" onclick="document.getElementById('file-input').click()">
-      <span class="upload-icon">📸</span>
+    <div class="upload-zone" id="upload-zone" role="button" tabindex="0" aria-label="Upload Waste Image" onclick="document.getElementById('file-input').click()" onkeydown="if(event.key==='Enter'||event.key===' ') { event.preventDefault(); document.getElementById('file-input').click(); }">
+      <span class="upload-icon" aria-hidden="true">📸</span>
       <div class="upload-text">Click to upload or drag & drop</div>
       <div class="upload-hint">Supports JPG, PNG, WEBP</div>
     </div>
@@ -1062,12 +1075,12 @@ function renderProfile() {
   if (profileEditMode) {
     usernameHtml = `
       <div class="username-edit-row">
-        <input type="text" class="username-input" id="username-input" value="${username}" placeholder="Enter username"/>
+        <input type="text" class="username-input" id="username-input" value="${escapeHTML(username)}" placeholder="Enter username" aria-label="Username"/>
         <button class="username-save-btn" onclick="saveProfileUsername()">Save</button>
       </div>
     `;
   } else {
-    usernameHtml = `<div class="username-display" onclick="startEditUsername()">${username} ✏️</div>`;
+    usernameHtml = `<div class="username-display" role="button" tabindex="0" onclick="startEditUsername()" onkeydown="if(event.key==='Enter'||event.key===' ')startEditUsername()">${escapeHTML(username)} ✏️</div>`;
   }
 
   let achievementsHtml = '';
@@ -1267,3 +1280,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (h !== currentPage) navigateTo(h);
   });
 });
+
+// Export for Jest Testing
+if (typeof module !== 'undefined') {
+  module.exports = {
+    calculateFootprint,
+    getScoreColor,
+    getScoreMessage,
+    escapeHTML
+  };
+}

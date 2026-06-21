@@ -1,0 +1,20 @@
+{
+  "name": "ecovision-web",
+  "version": "1.0.0",
+  "description": "> Track your carbon footprint, scan waste, get AI-powered eco advice, and earn green badges — all from your browser.",
+  "main": "app.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "jest": {
+    "testEnvironment": "jsdom"
+  },
+  "devDependencies": {
+    "jest": "^30.4.2",
+    "jest-environment-jsdom": "^30.4.1"
+  }
+}

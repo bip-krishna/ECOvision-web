@@ -1688,3 +1688,22 @@ body {
     padding: 32px 20px;
   }
 }
+
+/* ==========================================
+   ACCESSIBILITY: FOCUS STYLES
+   ========================================== */
+
+*:focus-visible {
+  outline: 3px solid var(--green-vivid);
+  outline-offset: 2px;
+}
+
+button:focus-visible,
+.upload-zone:focus-visible,
+.username-display:focus-visible,
+[role="button"]:focus-visible,
+input:focus-visible {
+  outline: 3px solid var(--green-vivid);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
