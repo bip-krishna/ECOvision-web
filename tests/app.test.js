@@ -3,6 +3,17 @@ const {
   getScoreColor,
   getScoreMessage,
   escapeHTML,
+  storageGet,
+  storageSet,
+  getChallenges,
+  saveChallenges,
+  getScanHistory,
+  saveScanResult,
+  completeChallenge,
+  getTotalPoints,
+  getUsername,
+  setUsername,
+  getAchievements
 } = require('../app.js');
 
 describe('EcoVision Business Logic', () => {
@@ -92,6 +103,81 @@ describe('EcoVision Business Logic', () => {
 
     test('Leaves safe strings alone', () => {
       expect(escapeHTML('Safe User Name')).toBe('Safe User Name');
+    });
+  });
+
+  describe('Storage & Gamification Logic', () => {
+    beforeEach(() => {
+      // Mock localStorage
+      let store = {};
+      Object.defineProperty(window, 'localStorage', {
+        value: {
+          getItem: jest.fn(key => store[key] || null),
+          setItem: jest.fn((key, value) => {
+            store[key] = value.toString();
+          }),
+          removeItem: jest.fn(key => {
+            delete store[key];
+          }),
+          clear: jest.fn(() => {
+            store = {};
+          })
+        },
+        writable: true
+      });
+      window.localStorage.clear();
+    });
+
+    test('storageGet and storageSet handle JSON correctly', () => {
+      const data = { test: 'value' };
+      storageSet('test_key', data);
+      expect(window.localStorage.setItem).toHaveBeenCalledWith('test_key', JSON.stringify(data));
+      
+      const retrieved = storageGet('test_key');
+      expect(retrieved).toEqual(data);
+    });
+
+    test('getUsername returns default if empty', () => {
+      expect(getUsername()).toBe('Eco Warrior');
+    });
+
+    test('setUsername saves custom name', () => {
+      setUsername('Jane Doe');
+      expect(getUsername()).toBe('Jane Doe');
+    });
+
+    test('getScanHistory returns empty array by default', () => {
+      expect(getScanHistory()).toEqual([]);
+    });
+
+    test('saveScanResult prepends to history', () => {
+      saveScanResult({ object: 'bottle' });
+      saveScanResult({ object: 'can' });
+      const history = getScanHistory();
+      expect(history.length).toBe(2);
+      expect(history[0].object).toBe('can'); // Newest first
+    });
+
+    test('getChallenges initializes default challenges', () => {
+      const challenges = getChallenges();
+      expect(challenges.length).toBeGreaterThan(0);
+      expect(challenges[0].id).toBe('cycle-commuter');
+    });
+
+    test('completeChallenge updates progress and adds achievement', () => {
+      const updated = completeChallenge('cycle-commuter');
+      const challenge = updated.find(c => c.id === 'cycle-commuter');
+      expect(challenge.progress).toBe(100);
+
+      const achievements = getAchievements();
+      expect(achievements.length).toBe(1);
+      expect(achievements[0].title).toBe('Cycle Commuter');
+    });
+
+    test('getTotalPoints calculates points from achievements', () => {
+      completeChallenge('cycle-commuter'); // 50 pts
+      completeChallenge('plastic-detox'); // 30 pts
+      expect(getTotalPoints()).toBe(80);
     });
   });
 

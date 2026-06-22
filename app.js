@@ -2,6 +2,7 @@
    EcoVision Web — Application Logic
    SPA Router + All Business Logic
    ======================================== */
+"use strict";
 
 // ==========================================
 // DATA / CONSTANTS
@@ -21,9 +22,9 @@ const energyFactor = 0.5;
 const shoppingFactors = { minimal: 0.5, low: 1.5, medium: 3.0, high: 5.0 };
 
 const categoryColors = {
-  plastic: '#FF6B6B', paper: '#4ECDC4', glass: '#45B7D1', metal: '#96CEB4',
-  organic: '#8BC34A', electronic: '#FF9800', textile: '#9C27B0',
-  hazardous: '#F44336', mixed: '#78909C',
+  'Plastic Waste': '#FF6B6B', 'Paper Waste': '#4ECDC4', 'Glass Waste': '#45B7D1', 'Metal Waste': '#96CEB4',
+  'Organic Waste': '#8BC34A', 'Electronic Waste': '#FF9800', 'Textile Waste': '#9C27B0',
+  'Hazardous Waste': '#F44336', 'Mixed Waste': '#78909C',
 };
 
 const impactColors = {
@@ -41,14 +42,14 @@ const defaultChallenges = [
 ];
 
 const mockScanItems = [
-  { object: 'Plastic Bottle', category: 'plastic', impact: 'High', suggestion: 'Rinse and place in recycling bin', co2Saved: 0.5 },
-  { object: 'Cardboard Box', category: 'paper', impact: 'Low', suggestion: 'Flatten and recycle', co2Saved: 0.3 },
-  { object: 'Glass Jar', category: 'glass', impact: 'Low', suggestion: 'Rinse and recycle', co2Saved: 0.4 },
-  { object: 'Aluminum Can', category: 'metal', impact: 'Medium', suggestion: 'Crush and recycle', co2Saved: 0.6 },
-  { object: 'Banana Peel', category: 'organic', impact: 'Low', suggestion: 'Compost in green bin', co2Saved: 0.1 },
-  { object: 'Old Phone', category: 'electronic', impact: 'High', suggestion: 'Take to e-waste center', co2Saved: 1.2 },
-  { object: 'Paper Cup', category: 'paper', impact: 'Medium', suggestion: 'Use reusable cups instead', co2Saved: 0.2 },
-  { object: 'Food Scraps', category: 'organic', impact: 'Low', suggestion: 'Start composting at home', co2Saved: 0.15 },
+  { object: 'bottle', category: 'Plastic Waste', impact: 'Medium', suggestion: 'Recycle in plastic bin', co2Saved: 0.5 },
+  { object: 'cardboard box', category: 'Paper Waste', impact: 'Low', suggestion: 'Flatten and recycle', co2Saved: 0.3 },
+  { object: 'glass jar', category: 'Glass Waste', impact: 'Low', suggestion: 'Rinse and recycle', co2Saved: 0.4 },
+  { object: 'aluminum can', category: 'Metal Waste', impact: 'Medium', suggestion: 'Crush and recycle', co2Saved: 0.6 },
+  { object: 'banana peel', category: 'Organic Waste', impact: 'Low', suggestion: 'Compost in green bin', co2Saved: 0.1 },
+  { object: 'old phone', category: 'Electronic Waste', impact: 'High', suggestion: 'Take to e-waste center', co2Saved: 1.2 },
+  { object: 'paper cup', category: 'Paper Waste', impact: 'Medium', suggestion: 'Use reusable cups instead', co2Saved: 0.2 },
+  { object: 'food scraps', category: 'Organic Waste', impact: 'Low', suggestion: 'Start composting at home', co2Saved: 0.15 },
 ];
 
 const allSuggestions = [
@@ -102,6 +103,11 @@ const simOptions = [
 // SECURITY & STORAGE HELPERS
 // ==========================================
 
+/**
+ * Escapes HTML characters in a string to prevent XSS vulnerabilities.
+ * @param {string} str - The string to escape.
+ * @returns {string} The escaped string.
+ */
 function escapeHTML(str) {
   if (!str) return '';
   return String(str).replace(/[&<>'"]/g, 
@@ -115,6 +121,11 @@ function escapeHTML(str) {
   );
 }
 
+/**
+ * Retrieves and parses JSON data from localStorage.
+ * @param {string} key - The localStorage key.
+ * @returns {any} The parsed data or null.
+ */
 function storageGet(key) {
   try {
     const data = localStorage.getItem(key);
@@ -132,6 +143,14 @@ function storageSet(key, value) {
 // BUSINESS LOGIC
 // ==========================================
 
+/**
+ * Calculates the monthly carbon footprint based on user inputs.
+ * @param {string} transport - Transport mode.
+ * @param {string} food - Diet type.
+ * @param {number} energy - Daily energy usage in kWh.
+ * @param {string} shopping - Shopping habits.
+ * @returns {Object} The calculated score and footprint breakdown.
+ */
 function calculateFootprint(transport, food, energy, shopping) {
   const transportVal = (transportFactors[transport] || 0) * 2.5;
   const foodVal = (foodFactors[food] || 3.5) * 7;
@@ -329,6 +348,10 @@ function renderBarChart(data, title, color = '#4CAF50') {
 const pages = ['home', 'assessment', 'scan', 'coach', 'simulator', 'profile'];
 let currentPage = 'home';
 
+/**
+ * Navigates to a specific page by updating the URL hash and DOM classes.
+ * @param {string} page - The name of the page to navigate to.
+ */
 function navigateTo(page) {
   if (!pages.includes(page)) page = 'home';
   currentPage = page;
@@ -729,7 +752,7 @@ function renderScanner() {
             <span class="scan-label">Category:</span>
             <span class="category-badge" style="background: ${catColor}20; color: ${catColor}">
               <span class="category-dot" style="background: ${catColor}"></span>
-              ${s.result.category.charAt(0).toUpperCase() + s.result.category.slice(1)}
+              ${escapeHTML(s.result.category)}
             </span>
           </div>
           <div class="scan-result-row">
@@ -1160,16 +1183,40 @@ function saveProfileUsername() {
   showToast('Username updated! 👤');
 }
 
+let lastFocusedElement = null;
+
+/**
+ * Shows the clear data confirmation modal and traps focus.
+ */
 function showClearDataModal() {
+  lastFocusedElement = document.activeElement;
   const overlay = document.getElementById('modal-overlay');
   overlay.classList.add('active');
+  overlay.setAttribute('aria-hidden', 'false');
+  
+  // Focus the first button in the modal
+  const firstBtn = overlay.querySelector('.btn-secondary');
+  if (firstBtn) firstBtn.focus();
 }
 
+/**
+ * Hides the clear data confirmation modal and restores focus.
+ */
 function hideClearDataModal() {
   const overlay = document.getElementById('modal-overlay');
   overlay.classList.remove('active');
+  overlay.setAttribute('aria-hidden', 'true');
+  
+  // Restore focus
+  if (lastFocusedElement) {
+    lastFocusedElement.focus();
+    lastFocusedElement = null;
+  }
 }
 
+/**
+ * Confirms and clears all user data from localStorage.
+ */
 function confirmClearData() {
   localStorage.removeItem(STORAGE_KEYS.ASSESSMENT);
   localStorage.removeItem(STORAGE_KEYS.SCAN_HISTORY);
@@ -1287,6 +1334,17 @@ if (typeof module !== 'undefined') {
     calculateFootprint,
     getScoreColor,
     getScoreMessage,
-    escapeHTML
+    escapeHTML,
+    storageGet,
+    storageSet,
+    getChallenges,
+    saveChallenges,
+    getScanHistory,
+    saveScanResult,
+    completeChallenge,
+    getTotalPoints,
+    getUsername,
+    setUsername,
+    getAchievements
   };
 }
