@@ -1,22 +1,8 @@
-# 🌍 EcoVision Web — AI-Powered Sustainability Dashboard
+# EcoVision Web
 
-> Track your carbon footprint, scan waste, get AI-powered eco advice, and earn green badges — all from your browser.
+A browser-based sustainability dashboard with carbon footprint estimates, a waste scanner, eco coaching, and a carbon simulator. It adapts the [EcoVision mobile project](https://github.com/bip-krishna/EcoVision) into a static site.
 
-EcoVision Web is a **single-page web application** converted from the original [EcoVision React Native](../EcoVision/) mobile app. It delivers the same complete sustainability experience using **zero dependencies** — just vanilla HTML, CSS, and JavaScript.
-
----
-
-## 📸 Screenshots
-
-| Welcome | Assessment Results | Dashboard |
-|---|---|---|
-| ![Welcome](https://via.placeholder.com/300x200?text=Welcome+Screen) | ![Results](https://via.placeholder.com/300x200?text=Assessment+Results) | ![Dashboard](https://via.placeholder.com/300x200?text=Dashboard) |
-
-| Carbon Simulator | AI Coach | Profile |
-|---|---|---|
-| ![Simulator](https://via.placeholder.com/300x200?text=Simulator) | ![Coach](https://via.placeholder.com/300x200?text=AI+Coach) | ![Profile](https://via.placeholder.com/300x200?text=Profile) |
-
----
+[Live demo](https://ec-ovision-web.vercel.app) · [Features](#-features) · [Getting started](#-getting-started)
 
 ## ✨ Features
 
